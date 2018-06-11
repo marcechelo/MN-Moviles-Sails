@@ -7,7 +7,6 @@ import com.beust.klaxon.Klaxon
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import java.util.*
-import kotlin.collections.ArrayList
 
 class HttpFuel : AppCompatActivity() {
 
@@ -15,7 +14,7 @@ class HttpFuel : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_http_fuel)
 
-        "http://172.29.64.82:1337/Entrenador/3".httpGet().responseString{request, response, result ->
+        "http://172.31.104.25:1337/Entrenador/1".httpGet().responseString{request, response, result ->
             when (result) {
                 is Result.Failure -> {
                     val ex = result.getException()
@@ -35,13 +34,14 @@ class HttpFuel : AppCompatActivity() {
                         Log.i("Http-ejemplo","created ${entrenador.createdAtDate}")
                         Log.i("Http-ejemplo","updated ${entrenador.updatedAtDate}")
 
-                        entrenador.pokemons.forEach{pokemon: Pokemon ->
+                        entrenador.pokemon.forEach{ pokemon: Pokemon ->
                             Log.i("Http-ejemplo","Nombre ${pokemon.nombre}")
                             Log.i("Http-ejemplo","Tipo ${pokemon.tipo}")
                             Log.i("Http-ejemplo","Numero ${pokemon.numero}")
                         }
 
                     }
+                    else{Log.i("http-ejemplo", "Entrenador nulo")}
 
                 }
             }
@@ -51,12 +51,12 @@ class HttpFuel : AppCompatActivity() {
 
 class Entredador(var nombre:String,
                  var apellido:String,
-                 var edad:String,
-                 var medallas: String,
+                 var edad:Int,
+                 var medallas: Int,
                  var createdAt: Long,
                  var updatedAt: Long,
                  var id:Int,
-                 var pokemons: ArrayList<Pokemon> = ArrayList()){
+                 var pokemon: List<Pokemon>){
 
     var createdAtDate = Date(createdAt)
     var updatedAtDate = Date(updatedAt)

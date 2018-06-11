@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "243966779080",
+    "firebase_url": "https://mn-moviles.firebaseio.com",
+    "project_id": "mn-moviles",
+    "storage_bucket": "mn-moviles.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243966779080:android:5cab2f47071e60f6",
+        "android_client_info": {
+          "package_name": "com.example.usrdel.servidores"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243966779080-3mjtsdrs9ljfggb8sj5fr7hn5aq8fd54.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "243966779080-3mjtsdrs9ljfggb8sj5fr7hn5aq8fd54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGo10XP1hWbLz7Aj7fTnjfpKv7Tll8q9k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

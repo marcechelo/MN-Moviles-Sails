@@ -15,12 +15,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         boton_http.setOnClickListener{view: View -> irAActividadHHTP()}
+        boton_camera.setOnClickListener{view: View -> irAActividadCamara()}
 
 
     }
 
     fun irAActividadHHTP(){
         val intent = Intent(this,HttpFuel::class.java)
+        startActivity(intent)
+    }
+
+    fun irAActividadCamara(){
+        val intent = Intent(this,CamaraActivity::class.java)
         startActivity(intent)
     }
 
