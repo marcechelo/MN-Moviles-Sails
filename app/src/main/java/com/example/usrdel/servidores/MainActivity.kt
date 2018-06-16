@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         boton_http.setOnClickListener{view: View -> irAActividadHHTP()}
         boton_camera.setOnClickListener{view: View -> irAActividadCamara()}
+        boton_maps.setOnClickListener{view: View -> irAActividadMaps()}
 
 
     }
@@ -39,6 +40,11 @@ class MainActivity : AppCompatActivity() {
 
     fun irAActividadCamara(){
         val intent = Intent(this,CamaraActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun irAActividadMaps(){
+        val intent = Intent(this,MapsActivity::class.java)
         startActivity(intent)
     }
 
