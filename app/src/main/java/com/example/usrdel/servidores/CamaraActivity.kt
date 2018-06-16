@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
+import android.util.Log
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 import kotlinx.android.synthetic.main.activity_camara.*
@@ -90,10 +91,10 @@ class CamaraActivity : AppCompatActivity() {
         when (requestCode) {
             TOMAR_FOTO_REQUEST -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    val fotoActualBitmap = BitmapFactory
-                            .decodeFile(directorioActualImagen)
+                    val extras = data.extras
+                    val fotoActualBitmap = extras!!.get("data") as Bitmap
                     image_view_foto.setImageBitmap(fotoActualBitmap)
-                    //obtenerInfoCodigDeBarras(fotoActualBitmap)
+                    obtenerInfoCodigDeBarras(fotoActualBitmap)
                 }
             }
         }
@@ -101,11 +102,28 @@ class CamaraActivity : AppCompatActivity() {
 
     fun obtenerInfoCodigDeBarras(bitmap:Bitmap){
 
-        val image = FirebaseVisionImage.fromBitmap(bitmap)
+        val imagenCodigo  = FirebaseVisionImage.fromBitmap(bitmap)
 
         val detector = FirebaseVision.getInstance().visionBarcodeDetector
 
-        val result = detector.detectInImage(image).result
+        val result = detector
+                .detectInImage(imagenCodigo)
+                .addOnSuccessListener { barCodes ->
+                    Log.i("info",
+                            "------- tamano del barcode ${barCodes.size}")
+                    for (barcode in barCodes) {
+                        val bounds = barcode.getBoundingBox()
+                        val corners = barcode.getCornerPoints()
+                        val rawValue = barcode.getRawValue()
+
+                        Log.i("info", "------- $bounds")
+                        Log.i("info", "------- $corners")
+                        Log.i("info", "------- $rawValue")
+                    }
+                }
+                .addOnFailureListener {
+                    Log.i("info", "------- No reconocio nada")
+                }
 
     }
 
