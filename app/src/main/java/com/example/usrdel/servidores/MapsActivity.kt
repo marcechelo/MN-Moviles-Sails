@@ -3,9 +3,11 @@ package com.example.usrdel.servidores
 import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Looper
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
 
 import com.google.android.gms.maps.model.*
@@ -66,11 +68,23 @@ class MapsActivity :
     // Create a stroke pattern of a dot followed by a gap, a dash, and another gap.
     private val PATTERN_POLYGON_BETA = Arrays.asList(DOT, GAP, DASH, GAP)
 
+
+    lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    lateinit var locationRequest: LocationRequest
+    lateinit var locationCallback: LocationCallback
+    val PERMISO_REQUEST = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
         solicitarPermisosLocalizacion()
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), PERMISO_REQUEST)
+        } else {
+            iniciar()
+        }
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -80,15 +94,43 @@ class MapsActivity :
         mapFragment.getMapAsync(this)
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
+    private fun buildLocationRequest() {
+        locationRequest = LocationRequest()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 5000
+        locationRequest.fastestInterval = 3000
+        locationRequest.smallestDisplacement = 10f
+    }
+
+    private fun buildLocationCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult?) {
+                super.onLocationResult(p0)
+                val location = p0!!.locations.get(p0!!.locations.size - 1) // obtener la localizacion
+                Log.i("location", "${location.latitude} / ${location.longitude}")
+            }
+        }
+    }
+
+    private fun parar() {
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun iniciar(){
+        buildLocationRequest()
+        buildLocationCallback()
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        val tienePermisosFineLocation = ActivityCompat.checkSelfPermission(this@MapsActivity, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        val tienePermisosCoarseLocation = ActivityCompat.checkSelfPermission(this@MapsActivity, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        if (tienePermisosFineLocation && tienePermisosCoarseLocation) {
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION), PERMISO_REQUEST)
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
+        }
+    }
+
+
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
