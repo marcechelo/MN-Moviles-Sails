@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.github.kittinunf.fuel.httpGet
+import com.onesignal.OneSignal
+import com.tapadoo.alerter.Alerter
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.xml.transform.Result
 
@@ -13,6 +15,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init();
+
+        Alerter.create(this@MainActivity)
+                .setTitle("Alert Title")
+                .setText("Alerta")
+                .show()
 
         boton_http.setOnClickListener{view: View -> irAActividadHHTP()}
         boton_camera.setOnClickListener{view: View -> irAActividadCamara()}
