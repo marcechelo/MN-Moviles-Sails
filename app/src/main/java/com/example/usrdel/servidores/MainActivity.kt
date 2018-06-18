@@ -8,6 +8,7 @@ import com.github.kittinunf.fuel.httpGet
 import com.onesignal.OneSignal
 import com.tapadoo.alerter.Alerter
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.intentFor
 import javax.xml.transform.Result
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         boton_http.setOnClickListener{view: View -> irAActividadHHTP()}
         boton_camera.setOnClickListener{view: View -> irAActividadCamara()}
         boton_maps.setOnClickListener{view: View -> irAActividadMaps()}
+        boton_ankor.setOnClickListener{view: View -> irAActividadAnkor()}
 
 
     }
@@ -46,6 +48,10 @@ class MainActivity : AppCompatActivity() {
     fun irAActividadMaps(){
         val intent = Intent(this,MapsActivity::class.java)
         startActivity(intent)
+    }
+
+    fun irAActividadAnkor(){
+        startActivity(intentFor<AnkorActivity>())
     }
 
 }
