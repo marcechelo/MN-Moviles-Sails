@@ -14,11 +14,13 @@ class AnkorActivity : AppCompatActivity() {
         setContentView(R.layout.activity_ankor)
 
         async(UI){
-
+            llamarPosts("i")
+            Log.i("async", "Luego de llamar post")
         }
+        Log.i("async", "Termino")
     }
 
-    fun llamarPosts(){
+    fun llamarPosts(idPost: String){
         val url = "https://jsonplaceholder.typicode.com/posts/1"
         url.httpGet().responseString{reques, response, result ->
             Log.i("async", " request: $reques")
