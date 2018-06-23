@@ -7,6 +7,7 @@ import com.beust.klaxon.Klaxon
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
+import org.json.JSONObject
 import java.util.*
 
 class HttpFuel : AppCompatActivity() {
@@ -59,8 +60,18 @@ class HttpFuel : AppCompatActivity() {
     }
 
     fun post(){
-        Fuel.post("http://172.29.64.47:1337/Entrenador").body("{ \"nombre\" : \"algo\", \"apellido\" : \"apellido\", \"edad\" : \"23\", \"medallas\" : \"3\" }").response { request, response, result ->
 
+        val json = JSONObject()
+        json.put("nombre", "Adrian")
+
+        val httpRequest = Fuel.post("http://172.29.64.47:1337/Entrenador").body(json.toString())
+
+                httpRequest.headers["Content-Type"] = "application/json"
+
+                httpRequest.response { request, response, result ->
+            Log.i("mensaje",request.toString())
+            Log.i("mensaje",response.toString())
+            Log.i("mensaje",result.toString())
         }
     }
 }
