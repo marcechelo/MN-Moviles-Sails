@@ -21,42 +21,28 @@ import java.util.*
 class CamaraActivity : AppCompatActivity() {
 
     var directorioActualImagen = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_camara)
 
 
-        val fotoActual = File(
-                Environment.getExternalStorageDirectory().path + // ->
-                        "/Android/data/com.example.usrdel.servidores/files/Pictures/JPEG_20180613_153033_1261933880561795823.jpg")
+        //val fotoActual = File(Environment.getExternalStorageDirectory().path + "/Android/data/com.example.usrdel.servidores/files/Pictures/JPEG_20180613_144431_1735249381.jpg")
 
-        val fotoActualBitmap = BitmapFactory
-                .decodeFile(fotoActual.getAbsolutePath())
+        //val fotoActualBitmap = BitmapFactory.decodeFile(fotoActual.getAbsolutePath())
 
-        image_view_camara.setImageBitmap(fotoActualBitmap)
+        //image_view_camara.setImageBitmap(fotoActualBitmap)
 
-
-
-
-        boton_tomar_foto.setOnClickListener { view ->
-            tomarFoto()
-        }
+        boton_tomar_foto.setOnClickListener { view -> tomarFoto()}
     }
 
     private fun tomarFoto() {
-        val archivoImagen = crearArchivo(
-                "JPEG_",
-                Environment.DIRECTORY_PICTURES,
-                ".jpg")
-
+        val archivoImagen = crearArchivo("JPEG_", Environment.DIRECTORY_PICTURES,".jpg")
         enviarIntentFoto(archivoImagen)
     }
 
-    private fun crearArchivo(prefijo: String,
-                             directorio: String,
-                             extension: String): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss")
-                .format(Date())
+    private fun crearArchivo(prefijo: String, directorio: String, extension: String): File {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
 
         val imageFileName = prefijo + timeStamp + "_"
         val storageDir = getExternalFilesDir(directorio)
@@ -71,12 +57,7 @@ class CamaraActivity : AppCompatActivity() {
     private fun enviarIntentFoto(archivo: File) {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        val photoURI: Uri = FileProvider
-                .getUriForFile(
-                        this,
-                        "com.example.usrdel.servidores.fileprovider",
-                        archivo)
-
+        val photoURI: Uri = FileProvider.getUriForFile(this,"com.example.usrdel.servidores.fileprovider", archivo)
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
         if (takePictureIntent.resolveActivity(packageManager) != null) {
@@ -85,26 +66,29 @@ class CamaraActivity : AppCompatActivity() {
 
     }
 
-    override fun onActivityResult(requestCode: Int,
-                                  resultCode: Int,
-                                  data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         when (requestCode) {
             TOMAR_FOTO_REQUEST -> {
                 if (resultCode == Activity.RESULT_OK) {
                     val extras = data.extras
                     val fotoActualBitmap = extras!!.get("data") as Bitmap
                     image_view_foto.setImageBitmap(fotoActualBitmap)
-                    obtenerInfoCodigDeBarras(fotoActualBitmap)
+                    //obtenerInfoCodigoBarras(fotoActualBitmap)
                 }
             }
         }
     }
 
-    fun obtenerInfoCodigDeBarras(bitmap:Bitmap){
+    fun obtenerInfoCodigoBarras(bitmap: Bitmap) {
 
-        val imagenCodigo  = FirebaseVisionImage.fromBitmap(bitmap)
+        val imagenCodigo = FirebaseVisionImage
+                .fromBitmap(bitmap)
 
-        val detector = FirebaseVision.getInstance().visionBarcodeDetector
+
+        val detector = FirebaseVision
+                .getInstance()
+                .visionBarcodeDetector
+
 
         val result = detector
                 .detectInImage(imagenCodigo)
@@ -124,8 +108,8 @@ class CamaraActivity : AppCompatActivity() {
                 .addOnFailureListener {
                     Log.i("info", "------- No reconocio nada")
                 }
-
     }
+
 
     companion object {
         val TOMAR_FOTO_REQUEST = 1
@@ -135,6 +119,6 @@ class CamaraActivity : AppCompatActivity() {
 }
 
 
-class GenericFileProvider : FileProvider() {
+/*class GenericFileProvider : FileProvider() {
 
-}
+}*/

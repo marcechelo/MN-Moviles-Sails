@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.github.kittinunf.fuel.httpGet
 import com.onesignal.OneSignal
 import com.tapadoo.alerter.Alerter
@@ -31,9 +32,20 @@ class MainActivity : AppCompatActivity() {
         boton_camera.setOnClickListener{view: View -> irAActividadCamara()}
         boton_maps.setOnClickListener{view: View -> irAActividadMaps()}
         boton_ankor.setOnClickListener{view: View -> irAActividadAnkor()}
+        boton_speech.setOnClickListener { vie: View -> irAActividadSTT() }
+        boton_camaraDos.setOnClickListener { view: View ->irAActividadCamara2() }
+
+        boton_random.setOnClickListener { view: View ->
+            val numero = (-0.189193..-0.188193).random()
+            val toast = Toast.makeText(this, numero.toString(), Toast.LENGTH_LONG)
+            toast.show()
+
+        }
 
 
     }
+
+    fun ClosedRange<Double>.random() = (Math.random() * (endInclusive - start) + start).toDouble()
 
     fun irAActividadHHTP(){
         val intent = Intent(this,HttpFuel::class.java)
@@ -45,6 +57,11 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    fun irAActividadCamara2(){
+        val intent = Intent(this,Camara2::class.java)
+        startActivity(intent)
+    }
+
     fun irAActividadMaps(){
         val intent = Intent(this,MapsActivity::class.java)
         startActivity(intent)
@@ -52,6 +69,11 @@ class MainActivity : AppCompatActivity() {
 
     fun irAActividadAnkor(){
         startActivity(intentFor<AnkorActivity>())
+    }
+
+    fun irAActividadSTT(){
+        val intent = Intent(this,STT::class.java)
+        startActivity(intent)
     }
 
 }

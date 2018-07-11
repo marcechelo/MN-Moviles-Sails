@@ -5,5 +5,5 @@
         path="Android/data/com.example.usrdel.servidores/files/Pictures" />
     <external-path
         name="my_videos"
-        path="Android/com.example.usrdel.servidores/files/Videos" />
+        path="/data/com.example.usrdel.servidores/files/Videos" />
 </paths>

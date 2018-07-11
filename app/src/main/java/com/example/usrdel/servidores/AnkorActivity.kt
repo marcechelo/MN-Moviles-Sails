@@ -45,4 +45,6 @@ class AnkorActivity : AppCompatActivity() {
     fun mostrarToast(mensaje:String){
         toast(mensaje)
     }
+
+
 }
